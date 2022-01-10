@@ -15,7 +15,8 @@ module "eks_tags" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_kms_key" "eks" {
-  description = "EKS Cluster Secret Encryption Key"
+  description         = "EKS Cluster Secret Encryption Key"
+  enable_key_rotation = true
 }
 
 module "aws_eks" {
