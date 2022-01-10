@@ -3,9 +3,9 @@ name: terrascan
 on:
   workflow_dispatch:
   push:
-    branches: [master]
+    branches: [dev] # use temp branch to disable for all branches
   pull_request:
-    branches: [master]
+    branches: [dev] # use temp branch to disable for PRs
 
 jobs:
   terrascan_job:
