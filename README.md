@@ -14,7 +14,7 @@ At the end of this lab, I want to have the following setup:
 - Nginx Ingress Controller and CloudFlare with domain.
 - The setup and deployment will be automated using Terraform.
 
-> **Note**: This test is forcus on Managed node and Self Managed Node Group. For Windows Self Managed and EMR Node group, I will be update later (if needed :lying_face:).
+> **Note**: This test is forcused on Managed node group and Fargate. For Self Managed, Windows Self Managed, I will be updated later (if needed :lying_face:).
 
 ## Architecture
 
