@@ -1,4 +1,4 @@
-# DEPLOY PRODUCTION READY GHOST BLOG TO AWS EKS BY TERRAFORM 
+# DEPLOY PRODUCTION READY GHOST BLOG TO AWS EKS BY TERRAFORM
 
 ## Prerequisite
 
@@ -14,7 +14,7 @@ At the end of this lab, I want to have the following setup:
 - Nginx Ingress Controller and CloudFlare with domain.
 - The setup and deployment will be automated using Terraform.
 
-> **Note**: This test is forcused on Managed node group and Fargate. For Self Managed, Windows Self Managed, I will be updated later (if needed :lying_face:).
+> **Note**: This test is forcused on Managed node group and Fargate. For Self Managed, Windows Self Managed, I will update later (if needed :lying_face:).
 
 ## Architecture
 
