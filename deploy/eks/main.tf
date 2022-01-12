@@ -26,11 +26,11 @@ data "aws_region" "current" {}
 data "aws_availability_zones" "available" {}
 
 data "aws_eks_cluster" "cluster" {
-  name = module.aws-eks-prod-for-terraform.eks_cluster_id
+  name = module.aws-eks-accelerator-for-terraform.eks_cluster_id
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.aws-eks-prod-for-terraform.eks_cluster_id
+  name = module.aws-eks-accelerator-for-terraform.eks_cluster_id
 }
 
 provider "aws" {
@@ -97,9 +97,9 @@ module "aws_vpc" {
 
 }
 #---------------------------------------------------------------
-# Example to consume aws-eks-prod-for-terraform module
+# Example to consume aws-eks-accelerator-for-terraform module
 #---------------------------------------------------------------
-module "aws-eks-prod-for-terraform" {
+module "aws-eks-accelerator-for-terraform" {
   source = "../.."
 
   tenant            = local.tenant
@@ -124,34 +124,34 @@ module "aws-eks-prod-for-terraform" {
     }
   }
 
-  #   # FARGATE
-  #   fargate_profiles = {
-  #     default = {
-  #       fargate_profile_name = "default"
-  #       fargate_profile_namespaces = [
-  #         {
-  #           namespace = "default"
-  #           k8s_labels = {
-  #             Environment = "preprod"
-  #             Zone        = "dev"
-  #             env         = "fargate"
-  #           }
-  #       }]
-  #       subnet_ids = module.aws_vpc.private_subnets
-  #       additional_tags = {
-  #         ExtraTag = "Fargate"
-  #       }
-  #     },
-  #   }
+  # FARGATE
+  fargate_profiles = {
+    default = {
+      fargate_profile_name = "default"
+      fargate_profile_namespaces = [
+        {
+          namespace = "default"
+          k8s_labels = {
+            Environment = "preprod"
+            Zone        = "dev"
+            env         = "fargate"
+          }
+      }]
+      subnet_ids = module.aws_vpc.private_subnets
+      additional_tags = {
+        ExtraTag = "Fargate"
+      }
+    },
+  }
 
 }
 
 module "kubernetes-addons" {
   source = "../../modules/kubernetes-addons"
 
-  eks_cluster_id        = module.aws-eks-prod-for-terraform.eks_cluster_id
-  eks_oidc_issuer_url   = module.aws-eks-prod-for-terraform.eks_oidc_issuer_url
-  eks_oidc_provider_arn = module.aws-eks-prod-for-terraform.eks_oidc_provider_arn
+  eks_cluster_id        = module.aws-eks-accelerator-for-terraform.eks_cluster_id
+  eks_oidc_issuer_url   = module.aws-eks-accelerator-for-terraform.eks_oidc_issuer_url
+  eks_oidc_provider_arn = module.aws-eks-accelerator-for-terraform.eks_oidc_provider_arn
 
   # EKS Managed Add-ons
   enable_amazon_eks_vpc_cni    = true
@@ -163,5 +163,5 @@ module "kubernetes-addons" {
   enable_metrics_server               = true
   enable_cluster_autoscaler           = true
 
-  depends_on = [module.aws-eks-prod-for-terraform.managed_node_groups]
+  depends_on = [module.aws-eks-accelerator-for-terraform.managed_node_groups]
 }

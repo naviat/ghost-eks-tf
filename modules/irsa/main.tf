@@ -4,7 +4,7 @@ resource "kubernetes_namespace_v1" "irsa" {
     name = var.kubernetes_namespace
 
     labels = {
-      "app.kubernetes.io/managed-by" = "terraform-ghost-blog-eks"
+      "app.kubernetes.io/managed-by" = "aws-eks-for-terraform"
     }
   }
 }
@@ -16,7 +16,7 @@ resource "kubernetes_service_account_v1" "irsa" {
     namespace   = var.kubernetes_namespace
     annotations = { "eks.amazonaws.com/role-arn" : aws_iam_role.irsa.arn }
     labels = {
-      "app.kubernetes.io/managed-by" = "terraform-ghost-blog-eks"
+      "app.kubernetes.io/managed-by" = "aws-eks-for-terraform"
     }
   }
 

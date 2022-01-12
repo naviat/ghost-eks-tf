@@ -7,7 +7,7 @@ resource "kubernetes_config_map" "aws_auth" {
     labels = merge(
       {
         "app.kubernetes.io/managed-by" = "Terraform"
-        "terraform.io/module"          = "terraform-ghost-eks-tf"
+        "terraform.io/module"          = "aws-eks-for-terraform"
       },
       var.aws_auth_additional_labels
     )
