@@ -1,5 +1,7 @@
 # DEPLOY PRODUCTION READY GHOST BLOG TO AWS EKS BY TERRAFORM
 
+> **NOTE: Try the [simple-solution] folder if you don't want to create somany resource (costing again ^^ 💰💰💰💰💰)**
+
 ## Prerequisite
 
 - `terraform` latest version.

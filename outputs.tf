@@ -33,16 +33,6 @@ output "worker_security_group_id" {
   value       = module.aws_eks.worker_security_group_id
 }
 
-output "self_managed_node_group_iam_role_arns" {
-  description = "IAM role arn's of self managed node groups"
-  value       = var.create_eks && length(var.self_managed_node_groups) > 0 ? values({ for nodes in sort(keys(var.self_managed_node_groups)) : nodes => join(",", module.aws_eks_self_managed_node_groups[nodes].self_managed_node_group_iam_role_arns) }) : []
-}
-
-output "self_managed_node_group_autoscaling_groups" {
-  description = "Autoscaling group names of self managed node groups"
-  value       = var.create_eks && length(var.self_managed_node_groups) > 0 ? values({ for nodes in sort(keys(var.self_managed_node_groups)) : nodes => join(",", module.aws_eks_self_managed_node_groups[nodes].self_managed_asg_names) }) : []
-}
-
 output "managed_node_group_iam_role_arns" {
   description = "IAM role arn's of managed node groups"
   value       = var.create_eks && length(var.managed_node_groups) > 0 ? values({ for nodes in sort(keys(var.managed_node_groups)) : nodes => join(",", module.aws_eks_managed_node_groups[nodes].managed_nodegroup_iam_role_name) }) : []
@@ -58,25 +48,11 @@ output "managed_node_groups" {
   value       = var.create_eks && length(var.managed_node_groups) > 0 ? module.aws_eks_managed_node_groups.* : []
 }
 
-output "self_managed_node_groups" {
-  description = "Outputs from EKS Self-managed node groups "
-  value       = var.create_eks && length(var.self_managed_node_groups) > 0 ? module.aws_eks_self_managed_node_groups.* : []
-}
-
 output "fargate_profiles" {
   description = "Outputs from EKS Fargate profiles groups "
   value       = var.create_eks && length(var.fargate_profiles) > 0 ? module.aws_eks_fargate_profiles.* : []
 }
 
-output "self_managed_node_group_aws_auth_config_map" {
-  description = "Self managed node groups AWS auth map"
-  value       = local.self_managed_node_group_aws_auth_config_map.*
-}
-
-output "windows_node_group_aws_auth_config_map" {
-  description = "Windows node groups AWS auth map"
-  value       = local.windows_node_group_aws_auth_config_map.*
-}
 
 output "managed_node_group_aws_auth_config_map" {
   description = "Managed node groups AWS auth map"

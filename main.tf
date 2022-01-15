@@ -21,7 +21,7 @@ resource "aws_kms_key" "eks" {
 
 module "aws_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "v18.0.0"
+  version = "v17.20.0"
 
   create_eks      = var.create_eks
   manage_aws_auth = false
