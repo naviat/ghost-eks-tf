@@ -4,6 +4,7 @@
 
 - `terraform` latest version.
 - `awscli` latest with suitable account key.
+- `helm`
 
 ## Objectives
 
