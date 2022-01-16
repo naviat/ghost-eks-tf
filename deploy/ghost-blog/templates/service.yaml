@@ -7,9 +7,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: 2368
+      targetPort: 2368
       protocol: TCP
-      name: http
   selector:
     {{- include "ghost-blog.selectorLabels" . | nindent 4 }}

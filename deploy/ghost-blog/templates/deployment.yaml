@@ -24,7 +24,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ghost-blog.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,18 +32,26 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: url
+              value: "{{ .Values.env.url }}"
+            - name: database__client
+              value: mysql
+            - name: database__connection__host
+              value: "{{ .Values.env.database.host }}"
+            - name: database__connection__port
+              value: "{{ .Values.env.database.port }}"
+            - name: database__connection__user
+              value: root
+            - name: database__connection__password
+              value: "{{ .Values.env.database.password }}"
+            - name: database__connection__database
+              value: defaultdb
+            - name: database__connection__ssl
+              value: "true"
           ports:
-            - name: http
-              containerPort: 80
+            - containerPort: 2368
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -5,6 +5,10 @@ provider "aws" {
 locals {
   name   = "homelab-${replace(basename(path.cwd), "_", "-")}"
   region = "ap-southeast-1"
+
+  db_creds = jsondecode(
+  data.aws_secretsmanager_secret_version.creds.secret_string
+   )
   tags = {
     Owner       = "user"
     Environment = "production"
@@ -14,10 +18,34 @@ locals {
 ################################################################################
 # Supporting Resources
 ################################################################################
-
+# Firstly we will create a random generated password which we will use in secrets.
 resource "random_password" "master" {
   length = 10
 }
+# Now create secret and secret versions for database master account 
+resource "aws_secretsmanager_secret" "secretmasterDB" {
+   name = "MasterAccounDB"
+}
+
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.secretmasterDB.id
+  secret_string = <<EOF
+   {
+    "password": "${random_password.master.result}"
+   }
+EOF
+}
+
+# Lets import the Secrets which got created recently and store it so that we can use later. 
+
+data "aws_secretsmanager_secret" "secretmasterDB" {
+  arn = aws_secretsmanager_secret.secretmasterDB.arn
+}
+
+data "aws_secretsmanager_secret_version" "creds" {
+  secret_id = data.aws_secretsmanager_secret.secretmasterDB.arn
+}
+
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -47,7 +75,7 @@ module "aurora" {
   name           = local.name
   engine         = "aurora-mysql"
   engine_version = "5.7.12"
-  insance_class  = "db.r5.large"
+  instance_class  = "db.t3.medium"
   instances = {
     1 = {}
     2 = {}
@@ -61,7 +89,7 @@ module "aurora" {
   allowed_cidr_blocks    = module.vpc.private_subnets_cidr_blocks
 
   iam_database_authentication_enabled = true
-  master_password                     = random_password.master.result
+  master_password                     = local.db_creds.password
   create_random_password              = false
 
   apply_immediately   = true
