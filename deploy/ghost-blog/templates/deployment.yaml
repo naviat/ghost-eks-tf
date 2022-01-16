@@ -38,14 +38,14 @@ spec:
             - name: database__connection__host
               valueFrom:
                 secretKeyRef: 
-                  name: MasterAccounDB
+                  name: master_account_creds
                   key: database_host
             - name: database__connection__user
               value: root
             - name: database__connection__password
               valueFrom:
                 secretKeyRef: 
-                  name: MasterAccounDB
+                  name: master_account_creds
                   key: database_password
             - name: database__connection__database
               value: ghost
