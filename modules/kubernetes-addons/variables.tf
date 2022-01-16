@@ -174,18 +174,6 @@ variable "aws_for_fluentbit_helm_config" {
   default     = {}
 }
 
-#-----------FARGATE FLUENT BIT-------------
-variable "enable_fargate_fluentbit" {
-  type        = bool
-  default     = false
-  description = "Enable Fargate FluentBit add-on"
-}
-
-variable "fargate_fluentbit_addon_config" {
-  type        = any
-  description = "Fargate fluentbit add-on config"
-  default     = {}
-}
 
 #-----------CERT MANAGER-------------
 variable "enable_cert_manager" {

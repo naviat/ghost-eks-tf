@@ -126,11 +126,6 @@ variable "self_managed_node_groups" {
   default     = {}
 }
 
-variable "fargate_profiles" {
-  description = "Fargate profile configuration"
-  type        = any
-  default     = {}
-}
 
 # EKS WINDOWS SUPPORT
 variable "enable_windows_support" {

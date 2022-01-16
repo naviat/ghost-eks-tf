@@ -77,13 +77,6 @@ module "cluster_autoscaler" {
   manage_via_gitops = var.argocd_manage_add_ons
 }
 
-module "fargate_fluentbit" {
-  count          = var.enable_fargate_fluentbit ? 1 : 0
-  source         = "./fargate-fluentbit"
-  eks_cluster_id = var.eks_cluster_id
-  addon_config   = var.fargate_fluentbit_addon_config
-}
-
 module "ingress_nginx" {
   count             = var.enable_ingress_nginx ? 1 : 0
   source            = "./ingress-nginx"

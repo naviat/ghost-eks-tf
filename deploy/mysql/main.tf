@@ -7,7 +7,7 @@ locals {
   region = "ap-southeast-1"
 
   db_creds = jsondecode(
-  data.aws_secretsmanager_secret_version.creds.secret_string
+  aws_secretsmanager_secret_version.creds.secret_string
    )
   tags = {
     Owner       = "user"
@@ -19,31 +19,9 @@ locals {
 # Supporting Resources
 ################################################################################
 # Firstly we will create a random generated password which we will use in secrets.
-resource "random_password" "master" {
+resource "random_password" "master_password" {
   length = 10
-}
-# Now create secret and secret versions for database master account 
-resource "aws_secretsmanager_secret" "secretmasterDB" {
-   name = "MasterAccounDB"
-}
-
-resource "aws_secretsmanager_secret_version" "sversion" {
-  secret_id = aws_secretsmanager_secret.secretmasterDB.id
-  secret_string = <<EOF
-   {
-    "password": "${random_password.master.result}"
-   }
-EOF
-}
-
-# Lets import the Secrets which got created recently and store it so that we can use later. 
-
-data "aws_secretsmanager_secret" "secretmasterDB" {
-  arn = aws_secretsmanager_secret.secretmasterDB.arn
-}
-
-data "aws_secretsmanager_secret_version" "creds" {
-  secret_id = data.aws_secretsmanager_secret.secretmasterDB.arn
+  special = false
 }
 
 
@@ -89,7 +67,7 @@ module "aurora" {
   allowed_cidr_blocks    = module.vpc.private_subnets_cidr_blocks
 
   iam_database_authentication_enabled = true
-  master_password                     = local.db_creds.password
+  master_password                     = random_password.master_password.result
   create_random_password              = false
 
   apply_immediately   = true
@@ -115,3 +93,28 @@ resource "aws_rds_cluster_parameter_group" "homelab" {
   description = "${local.name}-aurora-57-cluster-parameter-group"
   tags        = local.tags
 }
+
+# Now create secret and secret versions for database master account 
+resource "aws_secretsmanager_secret" "master_account_creds" {
+   name = "master_account_creds"
+}
+
+resource "aws_secretsmanager_secret_version" "creds" {
+  secret_id = aws_secretsmanager_secret.master_account_creds.id
+  secret_string = <<EOF
+   {
+    "database_password": "${random_password.master_password.result}",
+    "database_host": ${module.aurora.cluster_endpoint}
+   }
+EOF
+}
+
+# Lets import the Secrets which got created recently and store it so that we can use later. 
+
+data "aws_secretsmanager_secret" "master_account_creds" {
+  arn = aws_secretsmanager_secret.master_account_creds.arn
+}
+
+# data "aws_secretsmanager_secret_version" "creds" {
+#   secret_id = data.aws_secretsmanager_secret.master_account_creds.arn
+# }

@@ -38,19 +38,10 @@ output "managed_node_group_iam_role_arns" {
   value       = var.create_eks && length(var.managed_node_groups) > 0 ? values({ for nodes in sort(keys(var.managed_node_groups)) : nodes => join(",", module.aws_eks_managed_node_groups[nodes].managed_nodegroup_iam_role_name) }) : []
 }
 
-output "fargate_profiles_iam_role_arns" {
-  description = "IAM role arn's for Fargate Profiles"
-  value       = var.create_eks && length(var.fargate_profiles) > 0 ? { for nodes in sort(keys(var.fargate_profiles)) : nodes => module.aws_eks_fargate_profiles[nodes].eks_fargate_profile_role_name } : null
-}
 
 output "managed_node_groups" {
   description = "Outputs from EKS Managed node groups "
   value       = var.create_eks && length(var.managed_node_groups) > 0 ? module.aws_eks_managed_node_groups.* : []
-}
-
-output "fargate_profiles" {
-  description = "Outputs from EKS Fargate profiles groups "
-  value       = var.create_eks && length(var.fargate_profiles) > 0 ? module.aws_eks_fargate_profiles.* : []
 }
 
 
@@ -59,10 +50,6 @@ output "managed_node_group_aws_auth_config_map" {
   value       = local.managed_node_group_aws_auth_config_map.*
 }
 
-output "fargate_profiles_aws_auth_config_map" {
-  description = "Fargate profiles AWS auth map"
-  value       = local.fargate_profiles_aws_auth_config_map.*
-}
 
 output "amazon_prometheus_workspace_endpoint" {
   description = "Amazon Managed Prometheus Workspace Endpoint"

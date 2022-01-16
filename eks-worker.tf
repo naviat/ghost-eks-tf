@@ -34,17 +34,5 @@ module "aws_eks_managed_node_groups" {
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# FARGATE PROFILES
+# FARGATE PROFILES - UPDATE LATER
 # ---------------------------------------------------------------------------------------------------------------------
-module "aws_eks_fargate_profiles" {
-  source = "./modules/aws-eks-fargate-profiles"
-
-  for_each = { for k, v in var.fargate_profiles : k => v if length(var.fargate_profiles) > 0 }
-
-  fargate_profile = each.value
-  eks_cluster_id  = module.aws_eks.cluster_id
-  tags            = module.eks_tags.tags
-
-  depends_on = [module.aws_eks, kubernetes_config_map.aws_auth]
-
-}
