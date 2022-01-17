@@ -3,21 +3,21 @@
 1. Deploy the mysql from [mysql folder](./mysql)
 
 ```shell script
-$ tf init
+$ terraform init
 
-$ tf plan 
+$ terraform plan 
 
-$ tf apply -auto-approve
+$ terraform apply -auto-approve
 ```
 
 2. Deploy EKS cluster with add-ons from [eks/advanced](./eks/advanced) then install external secrets by Helm
 
 ```shell script
-$ tf init
+$ terraform init
 
-$ tf plan 
+$ terraform plan 
 
-$ tf apply -auto-approve
+$ terraform apply -auto-approve
 
 $ helm repo add external-secrets https://external-secrets.github.io/kubernetes-external-secrets/
 $ helm install external-secrets external-secrets/kubernetes-external-secrets
