@@ -20,4 +20,4 @@ At the end of this lab, I want to have the following setup:
 
 > **Note**: This test is forcused on Managed node group. For Self Managed, Fargate and Windows Self Managed, I will update later (if needed :lying_face:).
 
-![Architecture](/Ghost-blog.png "Architecture")
+![Architecture](/Ghost-Blog.png "Architecture")
